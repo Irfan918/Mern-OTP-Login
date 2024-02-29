@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { CgSpinner } from "react-icons/cg";
 import { Link, useNavigate } from 'react-router-dom';
+import { toast, Toaster } from 'react-hot-toast';
 
 const SignUp = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -9,6 +10,7 @@ const SignUp = () => {
   const [email, setEmail] = useState("");
   const [imageFile, setImageFile] = useState(null);
   const [loading, setLoading] = useState(false);
+  
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -23,22 +25,23 @@ const SignUp = () => {
     formData.append('imageFile', imageFile);
 
     try {
-      const response = await fetch('http://localhost:5000/api/v1/upload/imageUpload', {
+      const response = await fetch('https://agile-sweater-slug.cyclic.app/api/v1/upload/imageUpload', {
         method: 'POST',
         body: formData,
       });
 
       if (!response.ok) {
+        toast.error('Fill All Field Correctly');
+        setLoading(false);
         throw new Error('Network response was not ok');
+        
       }
 
       const data = await response.json();
-      console.log(data);
-      const data1= data.stringyfy()
-      console.log(data1);
-
+      
       if (data.success === true) {
-        setLoading(false)
+        toast.success('Succesfully Registered');
+        setLoading(false);
         navigate('/login');
       }
     } catch (error) {
@@ -48,6 +51,7 @@ const SignUp = () => {
 
   return (
     <section className="bg-emerald-500 flex items-center justify-center h-screen">
+      <Toaster toastOptions={{ duration: 4000 }} />
       <div className="w-80 flex flex-col gap-4 rounded-lg p-4">
         <h1 className="text-center leading-normal text-white font-medium text-3xl mb-6">
           Sign Up

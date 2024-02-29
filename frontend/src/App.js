@@ -15,7 +15,7 @@ const App = () => {
       const mobileNo = new FormData();
       mobileNo.append('phoneNumber', ph1);
 
-      const response = await fetch('http://localhost:5000/api/v1/upload/login', {
+      const response = await fetch('https://agile-sweater-slug.cyclic.app/api/v1/upload/login', {
         method: 'POST',
         body: mobileNo,
       });
